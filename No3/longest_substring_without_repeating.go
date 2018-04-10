@@ -57,5 +57,4 @@ func main() {
 	for _, v := range tests {
 		fmt.Println(lengthOfLongestSubstring(v.s))
 	}
-
 }
