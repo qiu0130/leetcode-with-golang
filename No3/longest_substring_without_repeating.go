@@ -4,14 +4,11 @@ import (
 	"fmt"
 )
 
-//type Trie struct {
-//	character []string
-//
-//}
-
-type Characters struct {
-	p map[string]int
-	l int
+func Max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
 
 func lengthOfLongestSubstring(s string) int {
@@ -19,49 +16,20 @@ func lengthOfLongestSubstring(s string) int {
 	if s == "" {
 		return 0
 	}
-	max := 1
 	p := make(map[string]int, len(s))
+	count := 0
+	ans := 0
 	for i := 0; i < len(s); i++ {
-		key := string(s[i])
-		if _, ok := p[key]; ok {
-			p[key] = p[key] + 1
-		} else {
-			p[key] = 1
+		if _, ok := p[string(s[i])]; ok {
+			// 重复
+			count = Max(p[string(s[i])], count)
 		}
+		ans = Max(i - count + 1, ans)
+		p[string(s[i])] = i + 1
+		//fmt.Println(p)
 	}
-
-	ch := make([]Characters, len(s))
-	ll := len(s)
-	for i := 0; i < ll; i++ {
-		ch[i].p = p
-		ch[i].l = ll-i
-	}
-	//fmt.Println(ch)
-
-	for i := 1; i < ll; i++ {
-		key := string(s[i])
-		if _, ok := ch[i].p[key]; ok {
-			ch[i].p[key] = ch[i].p[key] - 1
-		}
-	}
-	fmt.Println(ch)
-
-	var length int
-	for i := 0; i < ll; i++ {
-		key := string(s[i])
-		if _, ok := ch[i].p[key]; ok {
-			length = ch[i].p[key] - ch[i].l
-		} else {
-			length = ch[i].p[key]
-		}
-		if length > max {
-			max = length
-		}
-	}
-
-	return max
+	return ans
 }
-
 
 func main() {
 
@@ -71,18 +39,18 @@ func main() {
 		{
 			"aabc",
 		},
-		//{
-		//	"abcabcbb",
-		//},
-		//{
-		//	"bbbbb",
-		//},
-		//{
-		//	"",
-		//},
-		//{
-		//	"au",
-		//},
+		{
+			"abcabcbb",
+		},
+		{
+			"bbbbb",
+		},
+		{
+			"",
+		},
+		{
+			"au",
+		},
 
 	}
 
